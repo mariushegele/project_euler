@@ -1,6 +1,9 @@
+pub fn proper_divisors<'a>(n: &'a u32) -> impl Iterator<Item = u32> + 'a {
+    (1..=n/2).filter(|x| *n % x == 0)
+}
 
-fn sum_of_proper_divisors(a: u32) -> u32 {
-    (1..a).filter(|x| a % x == 0).sum()
+pub fn sum_of_proper_divisors(n: u32) -> u32 {
+    proper_divisors(&n).sum()
 }
 
 fn is_amicable(n: u32) -> bool {
@@ -18,10 +21,13 @@ mod tests {
 
     #[test]
     fn test_sum_of_proper_divisors() {
-        let divisors = vec![1,2,4,5,10,11,20,22,44,55,110];
-        assert_eq!(sum_of_proper_divisors(220), divisors.into_iter().sum());
-        let divisors = vec![1,2,4,71,142];
-        assert_eq!(sum_of_proper_divisors(284), divisors.into_iter().sum());
+        let expected_divisors = vec![1,2,4,5,10,11,20,22,44,55,110];
+        let divisors: Vec<u32> = proper_divisors(&220).collect();
+        assert_eq!(divisors, expected_divisors);
+        assert_eq!(sum_of_proper_divisors(220), expected_divisors.into_iter().sum());
+
+        let expected_divisors = vec![1,2,4,71,142];
+        assert_eq!(sum_of_proper_divisors(284), expected_divisors.into_iter().sum());
     }
 
     #[test]
